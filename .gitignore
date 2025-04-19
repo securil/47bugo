@@ -1,0 +1,26 @@
+# 시스템 파일
+.DS_Store
+Thumbs.db
+
+# 개발 환경 파일
+.vscode/
+.idea/
+*.sublime-*
+
+# 파이썬 스크립트 (배포할 필요 없는 도구 파일들)
+*.py
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# 로그 파일
+*.log
+
+# 백업 파일
+*~
+*.bak

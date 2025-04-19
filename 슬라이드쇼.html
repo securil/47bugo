@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사진 슬라이드쇼 - 2025-04-19</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .slideshow-container {
+            position: relative;
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .slide img {
+            max-width: 90%;
+            max-height: 85%;
+            object-fit: contain;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+        }
+        .slide-info {
+            margin-top: 15px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 15px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .controls button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+        .progress-bar {
+            height: 5px;
+            width: 100%;
+            background-color: #333;
+        }
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        /* 이미지 확대/축소 애니메이션 */
+        @keyframes zoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .slide.active img {
+            animation: zoom 20s infinite ease-in-out;
+        }
+        /* 가로 세로 이미지 구분 스타일 */
+        .horizontal img {
+            max-width: 90%;
+            max-height: 80%;
+        }
+        .vertical img {
+            max-height: 85%;
+            max-width: 65%;
+        }
+        /* 전체화면 스타일 */
+        .fullscreen-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+    
+    <button class="fullscreen-btn" id="fullscreen-btn">전체화면</button>
+    
+    <div class="slideshow-container" id="slideshow-container">
+        <!-- 슬라이드가 여기에 동적으로 생성됩니다 -->
+
+        <div class="slide horizontal">
+            <img src="0001_20220115_가로.jpg" alt="슬라이드 1">
+            <div class="slide-info">1 / 178 - 2022년 01월 15일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0002_20220220_세로.jpg" alt="슬라이드 2">
+            <div class="slide-info">2 / 178 - 2022년 02월 20일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0003_20220220_가로.jpg" alt="슬라이드 3">
+            <div class="slide-info">3 / 178 - 2022년 02월 20일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0004_20220220_가로.jpg" alt="슬라이드 4">
+            <div class="slide-info">4 / 178 - 2022년 02월 20일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0005_20220220_가로.jpg" alt="슬라이드 5">
+            <div class="slide-info">5 / 178 - 2022년 02월 20일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0006_20220320_가로.jpg" alt="슬라이드 6">
+            <div class="slide-info">6 / 178 - 2022년 03월 20일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0007_20220320_가로.jpg" alt="슬라이드 7">
+            <div class="slide-info">7 / 178 - 2022년 03월 20일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0008_20220601_가로.jpg" alt="슬라이드 8">
+            <div class="slide-info">8 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0009_20220601_가로.jpg" alt="슬라이드 9">
+            <div class="slide-info">9 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0010_20220601_가로.jpg" alt="슬라이드 10">
+            <div class="slide-info">10 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0011_20220601_가로.jpg" alt="슬라이드 11">
+            <div class="slide-info">11 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0012_20220601_세로.jpg" alt="슬라이드 12">
+            <div class="slide-info">12 / 178 - 2022년 06월 01일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0013_20220601_세로.jpg" alt="슬라이드 13">
+            <div class="slide-info">13 / 178 - 2022년 06월 01일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0014_20220601_가로.jpg" alt="슬라이드 14">
+            <div class="slide-info">14 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0015_20220601_가로.jpg" alt="슬라이드 15">
+            <div class="slide-info">15 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0016_20220601_가로.jpg" alt="슬라이드 16">
+            <div class="slide-info">16 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0017_20220601_가로.jpg" alt="슬라이드 17">
+            <div class="slide-info">17 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0018_20220601_세로.jpg" alt="슬라이드 18">
+            <div class="slide-info">18 / 178 - 2022년 06월 01일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0019_20220601_가로.jpg" alt="슬라이드 19">
+            <div class="slide-info">19 / 178 - 2022년 06월 01일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0020_20220601_세로.jpg" alt="슬라이드 20">
+            <div class="slide-info">20 / 178 - 2022년 06월 01일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0021_20230425_가로.jpg" alt="슬라이드 21">
+            <div class="slide-info">21 / 178 - 2023년 04월 25일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0022_20230425_가로.jpg" alt="슬라이드 22">
+            <div class="slide-info">22 / 178 - 2023년 04월 25일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0023_20230425_가로.jpg" alt="슬라이드 23">
+            <div class="slide-info">23 / 178 - 2023년 04월 25일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0024_20230425_가로.jpg" alt="슬라이드 24">
+            <div class="slide-info">24 / 178 - 2023년 04월 25일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0025_20230425_세로.jpg" alt="슬라이드 25">
+            <div class="slide-info">25 / 178 - 2023년 04월 25일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0026_20230425_세로.jpg" alt="슬라이드 26">
+            <div class="slide-info">26 / 178 - 2023년 04월 25일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0027_20230425_세로.jpg" alt="슬라이드 27">
+            <div class="slide-info">27 / 178 - 2023년 04월 25일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0028_20230425_세로.jpg" alt="슬라이드 28">
+            <div class="slide-info">28 / 178 - 2023년 04월 25일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0029_20230523_세로.jpg" alt="슬라이드 29">
+            <div class="slide-info">29 / 178 - 2023년 05월 23일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0030_20230523_가로.jpg" alt="슬라이드 30">
+            <div class="slide-info">30 / 178 - 2023년 05월 23일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0031_20230523_세로.jpg" alt="슬라이드 31">
+            <div class="slide-info">31 / 178 - 2023년 05월 23일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0032_20230523_세로.jpg" alt="슬라이드 32">
+            <div class="slide-info">32 / 178 - 2023년 05월 23일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0033_20230523_가로.jpg" alt="슬라이드 33">
+            <div class="slide-info">33 / 178 - 2023년 05월 23일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0034_20230523_세로.jpg" alt="슬라이드 34">
+            <div class="slide-info">34 / 178 - 2023년 05월 23일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0035_20230611_세로.jpg" alt="슬라이드 35">
+            <div class="slide-info">35 / 178 - 2023년 06월 11일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0036_20230611_세로.jpg" alt="슬라이드 36">
+            <div class="slide-info">36 / 178 - 2023년 06월 11일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0037_20230611_세로.jpg" alt="슬라이드 37">
+            <div class="slide-info">37 / 178 - 2023년 06월 11일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0038_20230611_가로.jpg" alt="슬라이드 38">
+            <div class="slide-info">38 / 178 - 2023년 06월 11일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0039_20230611_가로.jpg" alt="슬라이드 39">
+            <div class="slide-info">39 / 178 - 2023년 06월 11일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0040_20230611_세로.jpg" alt="슬라이드 40">
+            <div class="slide-info">40 / 178 - 2023년 06월 11일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0041_20230611_세로.jpg" alt="슬라이드 41">
+            <div class="slide-info">41 / 178 - 2023년 06월 11일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0042_20230611_가로.jpg" alt="슬라이드 42">
+            <div class="slide-info">42 / 178 - 2023년 06월 11일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0043_20230627_세로.jpg" alt="슬라이드 43">
+            <div class="slide-info">43 / 178 - 2023년 06월 27일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0044_20230627_가로.jpg" alt="슬라이드 44">
+            <div class="slide-info">44 / 178 - 2023년 06월 27일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0045_20230627_세로.jpg" alt="슬라이드 45">
+            <div class="slide-info">45 / 178 - 2023년 06월 27일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0046_20230822_가로.jpg" alt="슬라이드 46">
+            <div class="slide-info">46 / 178 - 2023년 08월 22일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0047_20230822_가로.jpg" alt="슬라이드 47">
+            <div class="slide-info">47 / 178 - 2023년 08월 22일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0048_20230822_가로.jpg" alt="슬라이드 48">
+            <div class="slide-info">48 / 178 - 2023년 08월 22일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0049_20231024_세로.jpg" alt="슬라이드 49">
+            <div class="slide-info">49 / 178 - 2023년 10월 24일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0050_20231024_세로.jpg" alt="슬라이드 50">
+            <div class="slide-info">50 / 178 - 2023년 10월 24일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0051_20231024_세로.jpg" alt="슬라이드 51">
+            <div class="slide-info">51 / 178 - 2023년 10월 24일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0052_20231024_세로.jpg" alt="슬라이드 52">
+            <div class="slide-info">52 / 178 - 2023년 10월 24일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0053_20231208_가로.jpg" alt="슬라이드 53">
+            <div class="slide-info">53 / 178 - 2023년 12월 08일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0054_20231208_세로.jpg" alt="슬라이드 54">
+            <div class="slide-info">54 / 178 - 2023년 12월 08일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0055_20231208_가로.jpg" alt="슬라이드 55">
+            <div class="slide-info">55 / 178 - 2023년 12월 08일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0056_20231208_가로.jpg" alt="슬라이드 56">
+            <div class="slide-info">56 / 178 - 2023년 12월 08일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0057_20231208_가로.jpg" alt="슬라이드 57">
+            <div class="slide-info">57 / 178 - 2023년 12월 08일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0058_20231208_가로.jpg" alt="슬라이드 58">
+            <div class="slide-info">58 / 178 - 2023년 12월 08일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0059_20231209_가로.jpg" alt="슬라이드 59">
+            <div class="slide-info">59 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0060_20231209_가로.jpg" alt="슬라이드 60">
+            <div class="slide-info">60 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0061_20231209_가로.jpg" alt="슬라이드 61">
+            <div class="slide-info">61 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0062_20231209_가로.jpg" alt="슬라이드 62">
+            <div class="slide-info">62 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0063_20231209_가로.jpg" alt="슬라이드 63">
+            <div class="slide-info">63 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0064_20231209_가로.jpg" alt="슬라이드 64">
+            <div class="slide-info">64 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0065_20231209_가로.jpg" alt="슬라이드 65">
+            <div class="slide-info">65 / 178 - 2023년 12월 09일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0066_20231217_가로.jpg" alt="슬라이드 66">
+            <div class="slide-info">66 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0067_20231217_가로.jpg" alt="슬라이드 67">
+            <div class="slide-info">67 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0068_20231217_세로.jpg" alt="슬라이드 68">
+            <div class="slide-info">68 / 178 - 2023년 12월 17일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0069_20231217_가로.jpg" alt="슬라이드 69">
+            <div class="slide-info">69 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0070_20231217_가로.jpg" alt="슬라이드 70">
+            <div class="slide-info">70 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0071_20231217_세로.jpg" alt="슬라이드 71">
+            <div class="slide-info">71 / 178 - 2023년 12월 17일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0072_20231217_가로.jpg" alt="슬라이드 72">
+            <div class="slide-info">72 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0073_20231217_가로.jpg" alt="슬라이드 73">
+            <div class="slide-info">73 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0074_20231217_가로.jpg" alt="슬라이드 74">
+            <div class="slide-info">74 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0075_20231217_가로.jpg" alt="슬라이드 75">
+            <div class="slide-info">75 / 178 - 2023년 12월 17일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0076_20240916_세로.jpg" alt="슬라이드 76">
+            <div class="slide-info">76 / 178 - 2024년 09월 16일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0077_20241022_세로.jpg" alt="슬라이드 77">
+            <div class="slide-info">77 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0078_20241022_세로.jpg" alt="슬라이드 78">
+            <div class="slide-info">78 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0079_20241022_세로.jpg" alt="슬라이드 79">
+            <div class="slide-info">79 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0080_20241022_세로.jpg" alt="슬라이드 80">
+            <div class="slide-info">80 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0081_20241022_세로.jpg" alt="슬라이드 81">
+            <div class="slide-info">81 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0082_20241022_세로.jpg" alt="슬라이드 82">
+            <div class="slide-info">82 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0083_20241022_세로.jpg" alt="슬라이드 83">
+            <div class="slide-info">83 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0084_20241022_세로.jpg" alt="슬라이드 84">
+            <div class="slide-info">84 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0085_20241022_세로.jpg" alt="슬라이드 85">
+            <div class="slide-info">85 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0086_20241022_세로.jpg" alt="슬라이드 86">
+            <div class="slide-info">86 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0087_20241022_세로.jpg" alt="슬라이드 87">
+            <div class="slide-info">87 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0088_20241022_세로.jpg" alt="슬라이드 88">
+            <div class="slide-info">88 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0089_20241022_세로.jpg" alt="슬라이드 89">
+            <div class="slide-info">89 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0090_20241022_세로.jpg" alt="슬라이드 90">
+            <div class="slide-info">90 / 178 - 2024년 10월 22일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0091_20241126_가로.jpg" alt="슬라이드 91">
+            <div class="slide-info">91 / 178 - 2024년 11월 26일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0092_20241213_가로.jpg" alt="슬라이드 92">
+            <div class="slide-info">92 / 178 - 2024년 12월 13일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0093_20241213_가로.jpg" alt="슬라이드 93">
+            <div class="slide-info">93 / 178 - 2024년 12월 13일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0094_20241213_세로.jpg" alt="슬라이드 94">
+            <div class="slide-info">94 / 178 - 2024년 12월 13일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0095_20250130_가로.png" alt="슬라이드 95">
+            <div class="slide-info">95 / 178 - 2025년 01월 30일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0096_20250130_가로.png" alt="슬라이드 96">
+            <div class="slide-info">96 / 178 - 2025년 01월 30일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0097_20250130_가로.png" alt="슬라이드 97">
+            <div class="slide-info">97 / 178 - 2025년 01월 30일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0098_20250410_세로.jpg" alt="슬라이드 98">
+            <div class="slide-info">98 / 178 - 2025년 04월 10일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0099_20250419_가로.jpg" alt="슬라이드 99">
+            <div class="slide-info">99 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0100_20250419_가로.jpg" alt="슬라이드 100">
+            <div class="slide-info">100 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0101_20250419_세로.jpg" alt="슬라이드 101">
+            <div class="slide-info">101 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0102_20250419_세로.jpg" alt="슬라이드 102">
+            <div class="slide-info">102 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0103_20250419_가로.jpg" alt="슬라이드 103">
+            <div class="slide-info">103 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0104_20250419_가로.jpg" alt="슬라이드 104">
+            <div class="slide-info">104 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0105_20250419_가로.jpg" alt="슬라이드 105">
+            <div class="slide-info">105 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0106_20250419_가로.jpg" alt="슬라이드 106">
+            <div class="slide-info">106 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0107_20250419_가로.jpg" alt="슬라이드 107">
+            <div class="slide-info">107 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0108_20250419_세로.jpg" alt="슬라이드 108">
+            <div class="slide-info">108 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0109_20250419_가로.jpg" alt="슬라이드 109">
+            <div class="slide-info">109 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0110_20250419_가로.jpg" alt="슬라이드 110">
+            <div class="slide-info">110 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0111_20250419_세로.jpg" alt="슬라이드 111">
+            <div class="slide-info">111 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0112_20250419_세로.jpg" alt="슬라이드 112">
+            <div class="slide-info">112 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0113_20250419_가로.jpg" alt="슬라이드 113">
+            <div class="slide-info">113 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0114_20250419_가로.jpg" alt="슬라이드 114">
+            <div class="slide-info">114 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0115_20250419_가로.jpg" alt="슬라이드 115">
+            <div class="slide-info">115 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0116_20250419_가로.jpg" alt="슬라이드 116">
+            <div class="slide-info">116 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0117_20250419_가로.jpg" alt="슬라이드 117">
+            <div class="slide-info">117 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0118_20250419_가로.jpg" alt="슬라이드 118">
+            <div class="slide-info">118 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0119_20250419_가로.jpg" alt="슬라이드 119">
+            <div class="slide-info">119 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0120_20250419_가로.jpg" alt="슬라이드 120">
+            <div class="slide-info">120 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0121_20250419_가로.jpg" alt="슬라이드 121">
+            <div class="slide-info">121 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0122_20250419_가로.jpg" alt="슬라이드 122">
+            <div class="slide-info">122 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0123_20250419_가로.jpg" alt="슬라이드 123">
+            <div class="slide-info">123 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0124_20250419_가로.jpg" alt="슬라이드 124">
+            <div class="slide-info">124 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0125_20250419_가로.jpg" alt="슬라이드 125">
+            <div class="slide-info">125 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0126_20250419_세로.jpg" alt="슬라이드 126">
+            <div class="slide-info">126 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0127_20250419_가로.jpg" alt="슬라이드 127">
+            <div class="slide-info">127 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0128_20250419_세로.jpg" alt="슬라이드 128">
+            <div class="slide-info">128 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0129_20250419_가로.jpg" alt="슬라이드 129">
+            <div class="slide-info">129 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0130_20250419_가로.jpg" alt="슬라이드 130">
+            <div class="slide-info">130 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0131_20250419_가로.jpg" alt="슬라이드 131">
+            <div class="slide-info">131 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0132_20250419_가로.jpg" alt="슬라이드 132">
+            <div class="slide-info">132 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0133_20250419_가로.jpg" alt="슬라이드 133">
+            <div class="slide-info">133 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0134_20250419_가로.jpg" alt="슬라이드 134">
+            <div class="slide-info">134 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0135_20250419_세로.jpg" alt="슬라이드 135">
+            <div class="slide-info">135 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0136_20250419_세로.jpg" alt="슬라이드 136">
+            <div class="slide-info">136 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0137_20250419_세로.jpg" alt="슬라이드 137">
+            <div class="slide-info">137 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0138_20250419_가로.jpg" alt="슬라이드 138">
+            <div class="slide-info">138 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0139_20250419_가로.jpg" alt="슬라이드 139">
+            <div class="slide-info">139 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0140_20250419_세로.jpg" alt="슬라이드 140">
+            <div class="slide-info">140 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0141_20250419_가로.jpg" alt="슬라이드 141">
+            <div class="slide-info">141 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0142_20250419_세로.jpg" alt="슬라이드 142">
+            <div class="slide-info">142 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0143_20250419_세로.jpg" alt="슬라이드 143">
+            <div class="slide-info">143 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0144_20250419_세로.jpg" alt="슬라이드 144">
+            <div class="slide-info">144 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0145_20250419_세로.jpg" alt="슬라이드 145">
+            <div class="slide-info">145 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0146_20250419_세로.jpg" alt="슬라이드 146">
+            <div class="slide-info">146 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0147_20250419_세로.jpg" alt="슬라이드 147">
+            <div class="slide-info">147 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0148_20250419_세로.jpg" alt="슬라이드 148">
+            <div class="slide-info">148 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0149_20250419_가로.jpg" alt="슬라이드 149">
+            <div class="slide-info">149 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0150_20250419_세로.jpg" alt="슬라이드 150">
+            <div class="slide-info">150 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0151_20250419_가로.jpg" alt="슬라이드 151">
+            <div class="slide-info">151 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0152_20250419_가로.jpg" alt="슬라이드 152">
+            <div class="slide-info">152 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0153_20250419_세로.jpg" alt="슬라이드 153">
+            <div class="slide-info">153 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0154_20250419_세로.jpg" alt="슬라이드 154">
+            <div class="slide-info">154 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0155_20250419_가로.jpg" alt="슬라이드 155">
+            <div class="slide-info">155 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0156_20250419_가로.jpg" alt="슬라이드 156">
+            <div class="slide-info">156 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0157_20250419_가로.jpg" alt="슬라이드 157">
+            <div class="slide-info">157 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0158_20250419_가로.jpg" alt="슬라이드 158">
+            <div class="slide-info">158 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide vertical">
+            <img src="0159_20250419_세로.jpg" alt="슬라이드 159">
+            <div class="slide-info">159 / 178 - 2025년 04월 19일 (세로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0160_20250419_가로.jpg" alt="슬라이드 160">
+            <div class="slide-info">160 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0161_20250419_가로.jpg" alt="슬라이드 161">
+            <div class="slide-info">161 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0162_20250419_가로.jpg" alt="슬라이드 162">
+            <div class="slide-info">162 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0163_20250419_가로.jpg" alt="슬라이드 163">
+            <div class="slide-info">163 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0164_20250419_가로.jpg" alt="슬라이드 164">
+            <div class="slide-info">164 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0165_20250419_가로.jpg" alt="슬라이드 165">
+            <div class="slide-info">165 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0166_20250419_가로.jpg" alt="슬라이드 166">
+            <div class="slide-info">166 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0167_20250419_가로.jpg" alt="슬라이드 167">
+            <div class="slide-info">167 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0168_20250419_가로.jpg" alt="슬라이드 168">
+            <div class="slide-info">168 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0169_20250419_가로.jpg" alt="슬라이드 169">
+            <div class="slide-info">169 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0170_20250419_가로.jpg" alt="슬라이드 170">
+            <div class="slide-info">170 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0171_20250419_가로.jpg" alt="슬라이드 171">
+            <div class="slide-info">171 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0172_20250419_가로.jpg" alt="슬라이드 172">
+            <div class="slide-info">172 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0173_20250419_가로.jpg" alt="슬라이드 173">
+            <div class="slide-info">173 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0174_20250419_가로.jpg" alt="슬라이드 174">
+            <div class="slide-info">174 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0175_20250419_가로.jpg" alt="슬라이드 175">
+            <div class="slide-info">175 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0176_20250419_가로.jpeg" alt="슬라이드 176">
+            <div class="slide-info">176 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0177_20250419_가로.jpg" alt="슬라이드 177">
+            <div class="slide-info">177 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+        <div class="slide horizontal">
+            <img src="0178_20250419_가로.jpg" alt="슬라이드 178">
+            <div class="slide-info">178 / 178 - 2025년 04월 19일 (가로)</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button id="prev">이전</button>
+        <button id="play-pause">일시정지</button>
+        <button id="next">다음</button>
+    </div>
+
+    <script>
+        // 슬라이드 설정
+        let currentSlide = 0;
+        let slideshowPaused = false;
+        let slideInterval;
+        const slideDelay = 5000; // 슬라이드 변경 간격 (밀리초)
+        
+        // DOM 요소
+        const slideshowContainer = document.getElementById('slideshow-container');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const playPauseButton = document.getElementById('play-pause');
+        const progressBar = document.getElementById('progress');
+        const fullscreenButton = document.getElementById('fullscreen-btn');
+        const slides = document.querySelectorAll('.slide');
+        
+        // 슬라이드 표시 함수
+        function showSlide(n) {
+            // 슬라이드 인덱스 범위 조정
+            if (n >= slides.length) {
+                currentSlide = 0;
+            } else if (n < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = n;
+            }
+            
+            // 모든 슬라이드 숨기기
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // 현재 슬라이드 표시
+            slides[currentSlide].classList.add('active');
+            
+            // 진행 상태 업데이트
+            updateProgress();
+        }
+        
+        // 다음 슬라이드 표시 함수
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // 이전 슬라이드 표시 함수
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // 슬라이드 자동 재생 설정
+        function startSlideshow() {
+            stopSlideshow();
+            if (!slideshowPaused) {
+                slideInterval = setInterval(nextSlide, slideDelay);
+                resetProgressAnimation();
+            }
+        }
+        
+        // 슬라이드 자동 재생 중지
+        function stopSlideshow() {
+            clearInterval(slideInterval);
+        }
+        
+        // 재생/일시정지 토글
+        function togglePlayPause() {
+            slideshowPaused = !slideshowPaused;
+            playPauseButton.textContent = slideshowPaused ? '재생' : '일시정지';
+            
+            if (slideshowPaused) {
+                stopSlideshow();
+            } else {
+                startSlideshow();
+            }
+        }
+        
+        // 진행 상태 표시줄 업데이트
+        function updateProgress() {
+            const progressPercentage = (currentSlide / (slides.length - 1)) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+        }
+        
+        // 진행 상태 애니메이션 초기화
+        function resetProgressAnimation() {
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            setTimeout(() => {
+                progressBar.style.transition = `width ${slideDelay}ms linear`;
+                progressBar.style.width = '100%';
+            }, 50);
+        }
+
+        // 전체화면 전환
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`전체화면 오류: ${err.message}`);
+                });
+                fullscreenButton.textContent = '전체화면 종료';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fullscreenButton.textContent = '전체화면';
+                }
+            }
+        }
+        
+        // 이벤트 리스너 등록
+        function addEventListeners() {
+            prevButton.addEventListener('click', () => {
+                prevSlide();
+                if (!slideshowPaused) {
+                    startSlideshow();
+                }
+            });
+            
+            nextButton.addEventListener('click', () => {
+                nextSlide();
+                if (!slideshowPaused) {
+                    startSlideshow();
+                }
+            });
+            
+            playPauseButton.addEventListener('click', togglePlayPause);
+            
+            fullscreenButton.addEventListener('click', toggleFullscreen);
+            
+            // 키보드 이벤트
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    if (!slideshowPaused) {
+                        startSlideshow();
+                    }
+                } else if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    if (!slideshowPaused) {
+                        startSlideshow();
+                    }
+                } else if (e.key === ' ') {
+                    togglePlayPause();
+                } else if (e.key === 'f' || e.key === 'F') {
+                    toggleFullscreen();
+                }
+            });
+        }
+        
+        // 초기화 함수
+        function init() {
+            showSlide(0);
+            startSlideshow();
+            addEventListeners();
+        }
+        
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

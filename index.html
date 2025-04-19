@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>47기 사진 슬라이드쇼</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 추가 인라인 스타일 */
+        .option-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(52, 152, 219, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .intro-text {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>47기 사진 갤러리</h1>
+            <p>사진 슬라이드쇼 보기</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro-text">
+            <h2>슬라이드쇼 선택</h2>
+            <p>아래 옵션 중에서 원하는 방식으로 사진을 감상해보세요.</p>
+        </div>
+
+        <div class="slideshow-options">
+            <!-- 기본 슬라이드쇼 -->
+            <div class="option-card">
+                <div class="option-badge">기본</div>
+                <div class="card-img">
+                    <img src="0001_20220115_가로.jpg" alt="기본 슬라이드쇼">
+                </div>
+                <div class="card-content">
+                    <h3>기본 슬라이드쇼</h3>
+                    <p>파일명 순서대로 정렬된 기본 슬라이드쇼입니다. 번호순으로 사진을 감상할 수 있습니다.</p>
+                    <a href="슬라이드쇼.html" class="view-btn">보기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 과거순 슬라이드쇼 -->
+            <div class="option-card">
+                <div class="option-badge">과거순</div>
+                <div class="card-img">
+                    <img src="0010_20220601_가로.jpg" alt="과거순 슬라이드쇼">
+                </div>
+                <div class="card-content">
+                    <h3>과거순 슬라이드쇼</h3>
+                    <p>오래된 사진부터 최근 사진까지, 시간 흐름에 따라 추억을 돌아볼 수 있는 슬라이드쇼입니다.</p>
+                    <a href="슬라이드쇼_과거순.html" class="view-btn">보기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 촬영 날짜순 슬라이드쇼 -->
+            <div class="option-card">
+                <div class="option-badge">촬영날짜순</div>
+                <div class="card-img">
+                    <img src="0025_20230425_세로.jpg" alt="촬영날짜순 슬라이드쇼">
+                </div>
+                <div class="card-content">
+                    <h3>촬영 날짜순 슬라이드쇼</h3>
+                    <p>실제 사진이 촬영된 날짜와 시간을 기준으로 정렬된 슬라이드쇼입니다.</p>
+                    <a href="슬라이드쇼_촬영날짜순.html" class="view-btn">보기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 시간대별 사진 목록 -->
+            <div class="option-card">
+                <div class="option-badge">시간대별</div>
+                <div class="card-img">
+                    <img src="0042_20230611_가로.jpg" alt="시간대별 사진 목록">
+                </div>
+                <div class="card-content">
+                    <h3>시간대별 사진 목록</h3>
+                    <p>비슷한 시간에 찍힌 사진들을 그룹으로 모아서 볼 수 있는 목록입니다. 중복 사진 확인에 유용합니다.</p>
+                    <a href="시간대별_사진목록_30분.html" class="view-btn">보기 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>사용 방법</h2>
+            <p><i class="fas fa-arrow-left"></i> <i class="fas fa-arrow-right"></i> <strong>화살표 키</strong>: 이전/다음 슬라이드로 이동</p>
+            <p><i class="fas fa-space-bar"></i> <strong>스페이스바</strong>: 슬라이드쇼 일시정지/재생</p>
+            <p><i class="fas fa-expand"></i> <strong>F 키</strong>: 전체화면 모드 전환</p>
+            <p><i class="fas fa-info-circle"></i> 슬라이드쇼가 끝나면 자동으로 처음으로 돌아갑니다.</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year">2025</span> 47기 사진 갤러리 | 깃허브 배포 버전</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
